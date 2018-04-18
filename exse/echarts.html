@@ -150,12 +150,15 @@
         $('input[type=button]').on('click',function () {
             happyData = [];
             yearData = year.slice(0,number);
+            var flag = 1;
             $('.two').each(function (i, v) {
                 if(i<= number-1){
                     var age = 'age'+(i+1);
                     var value = $('input[name=' + age + ']:checked').val();
                     if(isNullOrEmpty(value)){
+                        falg = 0;
                         alert("请选择第"+(i+1)+"题的答案");
+                        return;
                     }else{
                         happyData.push(value);
                     }
@@ -163,7 +166,9 @@
             })
             console.log(yearData);
             console.log(happyData);
-            enchartAge()
+            if(flag == 1) {
+                enchartAge()
+            }
         })
 
 
