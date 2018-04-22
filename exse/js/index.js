@@ -1,0 +1,358 @@
+/**
+ * Created by Rose on 2018/4/21.
+ */
+var load = 0;
+var clearTime1 ;
+var clearTime2 ;
+var yearsOld = 0; //年龄
+var number = 1; //第几题
+var yearArr = [9,9,8,7,4];
+var imgArr = ['./images/end_w_01.png','./images/1@2x.png','./images/2@2x.png','./images/3@2x.png','./images/5@2x.png']
+var year = ['0~3','4~7','8~14','15~18','19~22','23~27','28~31','32~40','40+'];
+var yearData = []; //年龄段数组
+var happyData = {}; //幸福度数组
+var happyArr = [];
+var question = [
+    {
+        num:1,
+        year:'0-3',
+        title:'虽然没啥记忆，但好像挺开心',
+        anwser:['衣来伸手，饭来张口','妈还是亲妈','我可能失忆了','被逼学走路','叫妈妈不应，叫爸爸不灵','我不想提起','满满的美好回忆']
+    },
+    {
+        num:2,
+        year:'4-7',
+        title:'熊孩子诞生了',
+        anwser:['皮一下就很开心了','冒着被揍的风险还是要皮一下','皮一下不存在的','被揍到不敢皮','皮不皮都要挨揍','我不想提起','满满的美好回忆']
+    },
+    {
+        num:3,
+        year:'8-14',
+        title:'“别人家的孩子”',
+        anwser:['幻想天上下刀子停课一天','数学老师忘留作业','学校里的路人甲','老师说“再讲十分钟”','体育老师又生病了','我不想提起','满满的美好回忆']
+    },
+    {
+        num:4,
+        year:'15-18',
+        title:'“上学”是我的劲敌',
+        anwser:['ta做了我的同桌','收获意外的假期','从路人甲变成了路人乙','班主任总是“暗中观察”','五年高考 三年模拟','我不想提起','满满的美好回忆']
+    },
+    {
+        num:5,
+        year:'18-22',
+        title:'白天不懂夜的黑',
+        anwser:['光明正大的谈恋爱','逃课从不点名','带饭、打水统统不落','一逃课就点名','寝室四年唯一单身狗','我不想提起','满满的美好回忆']
+    },
+    {
+        num:6,
+        year:'23-26',
+        title:'“别人家孩子”又来了',
+        anwser:['工资在手，对象我有','睡到自然醒','“差不多”的人生','相不完亲','别人家孩子都是人生赢家','我不想提起','满满的美好回忆']
+    },
+    {
+        num:7,
+        year:'27-31',
+        title:'感觉渐渐油腻',
+        anwser:['生活不止有眼前的苟且','用最贵的眼霜，熬最晚的夜','地铁大军中的一员','被逼婚','永远跟不上的房价','我不想提起','满满的美好回忆']
+    },
+    {
+        num:8,
+        year:'32-40',
+        title:'人到中年不得已，保温杯里泡枸杞',
+        anwser:['不用养生','一堆朋友一起浪','工资还够养家','老板还是你老板','还是单身','我不想提起','满满的美好回忆']
+    },
+    {
+        num:9,
+        year:'40+',
+        title:'保卫发际线',
+        anwser:['老来俏','平淡是真','上有老下有小','岁月是把杀猪刀','感觉身体被掏空','我不想提起','满满的美好回忆']
+    },
+]
+
+
+$(function(){
+    /*if(is_weixn()){
+        $('#musicfx').play();
+    }*/
+   /* $('.logo').load(function () {
+        document.getElementById('musicfx').play();
+    })*/
+    $('body').one('touchstart',function () {
+        document.getElementById('musicfx').play();
+    })
+
+    var random= Math.ceil(Math.random()*5);
+    $('.end-word').attr('src',imgArr[random-1]);
+    var aa = 1;
+    setInterval(function() {
+        if (aa == 1) {
+            $('.bgs:even').css({
+                'transform': 'translateX(-3px)'
+            })
+            $('.bgs:odd').css({
+                'transform': 'translateX(3px)'
+            })
+            aa=2
+        setTimeout(function () {
+            $('.bgs:even').css({
+                'transform': 'translateX(0px)'
+            })
+            $('.bgs:odd').css({
+                'transform': 'translateX(0px)'
+            })
+            aa =1
+        }, 50)
+        }
+    },2000)
+
+    loading();
+    share()
+
+    //首页-选择年龄
+    $('.bt_btn2').on('click',function () {
+        $('.index').fadeOut();
+        $('.index2').fadeOut();
+        $('#one_question').fadeIn();
+    })
+
+
+    //选择年龄
+    $('input[type=radio][name=age]').change(function () {
+        $(this).parent().addClass('active').siblings().removeClass('active');
+        var val = $(this).val();
+        $('#one_question .answer').attr('ans',val);
+        yearsOld = parseFloat(val);
+        console.log(yearsOld);
+    });
+
+    //提交年龄
+    $('#one_question .year-btn').on('click',function () {
+        yearsOld = parseInt($('#one_question .answer').attr('ans'));
+        $('#one_question').hide();
+        number = 1;
+        $.each(question,function (i, v) {
+            if(v.num == number){
+                $('#two_question .answer').attr('num',number);
+                $('#two_question .answer').attr('ans',2);
+                $('#two_question .years').text(v.year+'岁');
+                $('#two_question .title-two').text(v.title);
+                var answer = '';
+                $.each(v.anwser,function (idx, val) {
+                    if(idx == 3){
+                        answer += '<span class="active"><input onchange="clickYear(this)" type="radio" name="year" value="'+(6-idx)+'"><i>'+val+'</i></span><br>';
+                    }else  if(idx == 5){
+                        answer += '<span><input onchange="clickYear(this)" type="radio" name="year" value="1"><i>'+val+'</i></span><br>';
+                    }else  if(idx == 6){
+                        answer += '<span><input onchange="clickYear(this)" type="radio" name="year" value="7"><i>'+val+'</i></span><br>';
+                    }else{
+                        answer += '<span><input onchange="clickYear(this)" type="radio" name="year" value="'+(6-idx)+'"><i>'+val+'</i></span><br>';
+                    }
+                })
+                $('#two_question .answer').html(answer);
+            }
+        })
+        $('#two_question').show();
+    })
+
+})
+
+function loading(){
+    clearTime1 = setInterval(function () {
+        load += 5;
+        $('.load-center p').text(load+'%');
+        if(load >= 81){
+            clearInterval(clearTime1)
+        }
+    },100)
+
+    setTimeout(function () {
+        clearTime2 = setInterval(function () {
+            load += 3;
+            $('.load-center p').text(load+'%');
+            if(load >= 100){
+                clearInterval(clearTime2)
+                $('.loading').hide();
+                $('.background').show()
+                $('.index').show();
+                setTimeout(function () {
+                    $('.index2').show();
+                },1000)
+            }
+        },200)
+    },2100)
+}
+
+function clickYear(that) {
+    $(that).parent().addClass('active').siblings().removeClass('active');
+    var val = parseInt($(that).val());
+    $('#two_question .answer').attr('ans',val);
+}
+
+//下一题
+function nextQues(){
+    var happy = parseInt($('#two_question .answer').attr('ans'));
+    var num = parseInt($('#two_question .answer').attr('num'));
+    happyData = {
+        num:num,
+        happy:happy
+    };
+    happyArr.push(happy);
+    number++;
+    $.each(question,function (i, v) {
+        if(v.num == number){
+            $('#two_question .answer').attr('ans',2);
+            $('#two_question .answer').attr('num',number);
+            $('#two_question .years').text(v.year+'岁');
+            $('#two_question .title-two').text(v.title);
+            var answer = '';
+            $.each(v.anwser,function (idx, val) {
+                if(idx == 3){
+                    answer += '<span class="active"><input onchange="clickYear(this)" type="radio" name="year" value="'+(6-idx)+'"><i>'+val+'</i></span><br>';
+                }else  if(idx == 5){
+                    answer += '<span><input onchange="clickYear(this)" type="radio" name="year" value="1"><i>'+val+'</i></span><br>';
+                }else  if(idx == 6){
+                    answer += '<span><input onchange="clickYear(this)" type="radio" name="year" value="7"><i>'+val+'</i></span><br>';
+                }else{
+                    answer += '<span><input onchange="clickYear(this)" type="radio" name="year" value="'+(6-idx)+'"><i>'+val+'</i></span><br>';
+                }
+            })
+            $('#two_question .answer').html(answer);
+            return false;
+        }
+    })
+
+    if(number >= yearArr[yearsOld-1]){
+        $('#two_question .year-btn').attr('onclick','submitXinDian()')
+        $('#two_question .year-btn').text('生成心电图')
+    }
+
+}
+
+/**
+ * 生产心电图
+ */
+function submitXinDian(){
+    var happy = parseInt($('#two_question .answer').attr('ans'));
+    var num = parseInt($('#two_question .answer').attr('num'));
+    happyData = {
+        num:num,
+        happy:happy
+    };
+    happyArr.push(happy);
+    yearData = year.slice(0,yearArr[yearsOld-1]);
+
+    $('.logo').show();
+    $('#two_question').hide()
+    $('.end').show()
+    enchartAge();
+}
+
+
+function enchartAge() {
+
+
+//            var symbolSize = 10;
+    var myChart = echarts.init(document.getElementById('main'));
+    var option = {
+        title: {
+            text: '最幸福',
+        },
+        legend:{
+            // itemGap:30,
+        },
+        tooltip: {},
+        xAxis: {
+            data: yearData,
+            boundaryGap: false,
+
+        },
+        yAxis: {
+            show:false,
+            // splitNumber:21,
+            interval:21,
+            // minInterval: 1000,
+            maxInterval:1000,
+            boundaryGap: false,
+        },
+        series: [{
+            name: '年龄段(岁)',
+            type: 'line',
+            smooth: true,
+            data: happyArr,
+            color: ['#666'],
+            symbol:'none',
+            itemStyle:{
+                normal:{
+                    lineStyle:{
+                        width:3
+                    }
+                }
+            }
+        }],
+    };
+    myChart.setOption(option);
+}
+
+/**
+ * 判断是否为空
+ * @param strVal
+ * @returns {boolean}
+ */
+function isNullOrEmpty(strVal) {
+    if (strVal == '' || strVal == null || strVal == undefined) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function share(){
+    //先定义分享参数对象,全参数为（可按需配置 ）：
+    var options = {
+        'id':"高能少年团", //项目名
+        'title':"人生心电图",
+        'desc':"选择每个人生阶段你印象最深的那个词语 人生心电图即将生成",
+        'link':"http://h5.flyfinger.com/2018/O/xindiantu/index.html",
+        'imgUrl':"http://h5.flyfinger.com/2018/O/xindiantu/images/dian.png",
+        //        'type':'分享类型,music、video或link，不填默认为link',
+        //        'dataUrl':' 如果type是music或video，则要提供数据链接，默认为空',
+        //        'success':function(){
+        //            alert('分享成功加调');
+        //        },
+        //        'cancel':function(){
+        //            alert('分享取消回调');
+        //        },
+        //        'trigger':function(){
+        //            alert('调起微信菜单');
+        //        },
+        //        'fail':function(){
+        //            alert('调用失败回调');
+        //        }
+    };
+    //后定义实例(注：实例名不能为关键字和'wx')：
+    var _wx_share = new WxShare(options);
+    //如要在中途重置分享信息，调用setOptions方法：
+    //    _wx_share.setOptions({
+    //        'title':'修改后的分享标题'
+    //    });
+    //如要在中途重置分享给朋友，调用setAppMessageOptions方法：
+    //    _wx_share.setAppMessageOptions({
+    //        'title':'修改后分享给朋友的分享标题'
+    //    });
+    //如要在中途重置分享到朋友圈，调用setTimeLineOptions方法：
+    _wx_share.setTimeLineOptions({
+        'title':"朋友圈title重置"
+    });
+}
+
+
+
+/***
+ * 判断是否是微信浏览器
+ * @returns {boolean}
+ */
+function is_weixn() {
+    var ua = navigator.userAgent.toLowerCase();
+    var isWeixin = ua.indexOf('micromessenger') != -1;
+    return isWeixin;
+}
