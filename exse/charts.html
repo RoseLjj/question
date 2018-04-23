@@ -14,8 +14,9 @@
 
         }
         #main{
+            width: 90%;
             box-shadow: 10px 10px 10px #666;
-            transform: rotateX(-20deg) rotateY(35deg);
+            /*transform: rotateX(-20deg) rotateY(35deg);*/
             transform-origin:center;
         }
     </style>
@@ -42,23 +43,83 @@
             var myChart = echarts.init(document.getElementById('main'));
             var option = {
                 title: {
-                    text: '7天内订单趋势',
+                    text: '       ',
+                    subtext: '  最幸福',
+                    subtextStyle:{
+                        color:'#666',
+                        fontSize:14,
+                        lineHeight:80,
+                        fontWeight:'bold',
+                    }
+//                    subtext:'  最幸福'
+                },
+                grid:{
+                    right:'17%',
                 },
                 tooltip: {},
                 xAxis: {
+                    name:'年龄段(岁)',
                     data: yearData,
                     boundaryGap: false,
+                    axisLine:{
+                        symbol:['none', 'arrow'],
+                        lineStyle:{
+                            color:'#666',
+                            width:2,
+                        },
+                    },
 
+                    axisTick:{
+                        show:false,
+                    },
+                    nameTextStyle:{
+                        color:'#666'
+                    },
+                    nameGap:0,
+                    nameRotate:45,
                 },
                 yAxis: {
-                    boundaryGap: false,
+                    name:'最高不是',
+                    nameLocation:'start',
+                    nameGap:-20,
+//                    boundaryGap:'20%',
+//                    show:false,
+//                    boundaryGap: false,
+//                    boundaryGap: ['20%', '20%'],
+                    axisLine:{
+                        show:false,
+                        lineStyle:{
+//                            opacity:0,
+                            color:'transparent',
+                        }
+                    },
+                    splitLine:{
+                        show:false,
+                    },
+                    nameTextStyle:{
+                        color:'#666',
+                        fontSize:14,
+                        lineHeight:80,
+                        fontWeight:'bold',
+                    },
+                    axisTick:{
+//                        interval:5,
+                    },
                 },
                 series: [{
-                    name: '开心',
+//                    name: '开心',
                     type: 'line',
                     smooth: true,
+                    symbol:'none',
                     data: happyData,
-                    color: ['#EC3341'],
+                    color: ['#666'],
+                    itemStyle:{
+                        normal:{
+                            lineStyle:{
+                                width:3
+                            }
+                        }
+                    }
                 }],
             };
             myChart.setOption(option);
