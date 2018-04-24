@@ -7,7 +7,7 @@ var clearTime2;
 var yearsOld = 0; //年龄
 var number = 1; //第几题
 var yearArr = [9, 9, 8, 7, 4];
-var imgArr = ['./images/4.png', './images/1@2x.png', './images/2@2x.png', './images/3@2x.png', './images/5@2x.png']
+var imgArr = ['http://s.flyfinger.com/picRepo/O/xindiantu/images/4.png', 'http://s.flyfinger.com/picRepo/O/xindiantu/images/1@2x.png', 'http://s.flyfinger.com/picRepo/O/xindiantu/images/2@2x.png', 'http://s.flyfinger.com/picRepo/O/xindiantu/images/3@2x.png', 'http://s.flyfinger.com/picRepo/O/xindiantu/images/5@2x.png']
 var year = ['0~3', '4~7', '8~14', '15~18', '19~22', '23~27', '28~31', '32~40', '40+'];
 var yearData = []; //年龄段数组
 var happyData = []; //幸福度数组
@@ -399,8 +399,8 @@ function share() {
         'id': "高能少年团", //项目名
         'title': "人生心电图",
         'desc': "选择每个人生阶段你印象最深的那个词语 人生心电图即将生成",
-        'link': "http://h5.flyfinger.com/2018/O/xindiantu/index.html",
-        'imgUrl': "http://h5.flyfinger.com/2018/O/xindiantu/images/dian.png",
+        'link': "http://s.flyfinger.com/picRepo/O/xindiantu/index.html",
+        'imgUrl': "http://s.flyfinger.com/picRepo/O/xindiantu/images/dian.png",
         //        'type':'分享类型,music、video或link，不填默认为link',
         //        'dataUrl':' 如果type是music或video，则要提供数据链接，默认为空',
         //        'success':function(){
