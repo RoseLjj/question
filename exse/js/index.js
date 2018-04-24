@@ -315,7 +315,7 @@ function enchartAge() {
             }
         },
         grid: {
-            right: '20%',
+            right: '15%',
         },
         tooltip: {},
         xAxis: {
