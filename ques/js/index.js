@@ -216,14 +216,14 @@ function renderQues() {
             var answer = '';
             var flag = 0;
             var flag_num = 0;
-            $.each(happyData,function (ii, vv) {
-                if(vv.num == number){
+            $.each(happyData, function (ii, vv) {
+                if (vv.num == number) {
                     flag = 1;
                     flag_num = vv.happy;
                     $('#two_question .answer').attr('ans', flag_num);
                 }
             })
-            if(flag == 0) {
+            if (flag == 0) {
                 $.each(v.anwser, function (idx, val) {
                     if (idx == 3) {
                         answer += '<span class="active"><input onchange="clickYear(this)" type="radio" name="year" value="' + (6 - idx) + '"><i>' + val + '</i></span><br>';
@@ -235,17 +235,17 @@ function renderQues() {
                         answer += '<span><input onchange="clickYear(this)" type="radio" name="year" value="' + (6 - idx) + '"><i>' + val + '</i></span><br>';
                     }
                 })
-            }else{
+            } else {
                 $.each(v.anwser, function (idx, val) {
-                    if(flag_num == 7){
+                    if (flag_num == 7) {
                         if (idx == 6) {
                             answer += '<span class="active"><input onchange="clickYear(this)" type="radio" name="year" value="7"><i>' + val + '</i></span><br>';
                         } else {
                             answer += '<span><input onchange="clickYear(this)" type="radio" name="year" value="' + (6 - idx) + '"><i>' + val + '</i></span><br>';
                         }
-                    }else {//5  -- 序号为1
-                        if(idx == (6-flag_num)){
-                            answer += '<span class="active"><input onchange="clickYear(this)" type="radio" name="year" value="'+ (6 - idx) +'"><i>' + val + '</i></span><br>';
+                    } else {//5  -- 序号为1
+                        if (idx == (6 - flag_num)) {
+                            answer += '<span class="active"><input onchange="clickYear(this)" type="radio" name="year" value="' + (6 - idx) + '"><i>' + val + '</i></span><br>';
                         } else if (idx == 6) {
                             answer += '<span><input onchange="clickYear(this)" type="radio" name="year" value="7"><i>' + val + '</i></span><br>';
                         } else {
@@ -268,7 +268,7 @@ function prevQues() {
     renderQues();
     $('#two_question .year-btn').attr('onclick', 'nextQues()');
     $('#two_question .year-btn').text('继续前行');
-    if(number == 1){
+    if (number == 1) {
         $('#two_question .left').attr('onclick', '');
     }
 
@@ -393,13 +393,16 @@ function isNullOrEmpty(strVal) {
     }
 }
 
+/*
+
 function share() {
     //先定义分享参数对象,全参数为（可按需配置 ）：
     var options = {
         'id': "高能少年团", //项目名
         'title': "人生心电图",
         'desc': "选择每个人生阶段你印象最深的那个词语 人生心电图即将生成",
-        'link': "http://s.flyfinger.com/picRepo/O/xindiantu/index.html",
+        // 'link': "http://s.flyfinger.com/picRepo/O/xindiantu/index.html",
+        'link': "http://h5.dodoh5.com.cn/O/xindiantu/index.html",
         'imgUrl': "http://s.flyfinger.com/picRepo/O/xindiantu/images/dian.png",
         //        'type':'分享类型,music、video或link，不填默认为link',
         //        'dataUrl':' 如果type是music或video，则要提供数据链接，默认为空',
@@ -431,7 +434,127 @@ function share() {
         'title': "朋友圈title重置"
     });
 }
+*/
 
+
+
+var htmlWidth=document.documentElement.clientWidth||document.body.clientWidth;
+var htmlDom=document.getElementsByTagName("html")[0];
+htmlDom.style.fontSize=htmlWidth/640*40+"px";
+
+function GetRequest(){
+    var url = location.search; //获取url中"?"符后的字串
+    var theRequest = new Object();
+    if (url.indexOf("?") != -1) {
+        var str = url.substr(1);
+        var strs = str.split("&");
+        for(var i = 0; i < strs.length; i ++) {
+            theRequest[strs[i].split("=")[0]]=(strs[i].split("=")[1]);
+        }
+
+    }
+    return theRequest;
+}
+window["urlObj"]=GetRequest();
+function share() {
+    var selfURL = window.location.href;
+
+    $.ajax({
+        url: "http://h5.dodoh5.com.cn/360dodoh5/wxService", //接口文档提供地址
+        type: "POST",
+        data: {
+            url: selfURL,
+        },
+        dataType: 'json',
+        success: function (_data) {
+            console.log(_data);
+
+            wx.config({
+                debug: false,
+                appId: 'wxb2a93bcde109c2db',//接口文档提供appId
+                timestamp: _data.timestamp,
+                nonceStr: _data.nonceStr,
+                signature: _data.signature,
+                jsApiList: [
+                    'checkJsApi',
+                    'onMenuShareTimeline',
+                    'onMenuShareAppMessage',
+                    'onMenuShareQQ',
+                    'onMenuShareWeibo',
+                    'hideMenuItems',
+                    'showMenuItems',
+                    'hideAllNonBaseMenuItem',
+                    'showAllNonBaseMenuItem',
+                    'translateVoice',
+                    'startRecord',
+                    'stopRecord',
+                    'onRecordEnd',
+                    'playVoice',
+                    'pauseVoice',
+                    'stopVoice',
+                    'uploadVoice',
+                    'downloadVoice',
+                    'chooseImage',
+                    'previewImage',
+                    'uploadImage',
+                    'downloadImage',
+                    'getNetworkType',
+                    'openLocation',
+                    'getLocation',
+                    'hideOptionMenu',
+                    'showOptionMenu',
+                    'closeWindow',
+                    'scanQRCode',
+                    'chooseWXPay',
+                    'openProductSpecificView',
+                    'addCard',
+                    'chooseCard',
+                    'openCard'
+                ]// 功能列表，我们要使用JS-SDK的什么功能
+            });
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            console.log('-=-=-=-=-=-=');
+            console.log(XMLHttpRequest.status);
+            console.log(XMLHttpRequest.readyState);
+            console.log(textStatus);
+            console.log(errorThrown);
+        }
+    });
+
+    wx.ready(function () {
+        wx.onMenuShareTimeline({
+            title: "人生心电图", // 分享标题
+            link: "http://h5.dodoh5.com.cn/O/xindiantu/index.html", // 分享链接,将当前登录用户转为puid,以便于发展下线
+            imgUrl: "http://s.flyfinger.com/picRepo/O/xindiantu/images/dian.png", // 分享图标
+            success: function () {
+                if (typeof _hmt !== 'undefined') {
+                    _hmt.push(["_trackEvent", "share_1", "click", "share_1"]);
+                }
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+            }
+        });
+        wx.onMenuShareAppMessage({
+            title: "人生心电图", // 分享标题
+            desc: "选择每个人生阶段你印象最深的那个词语 人生心电图即将生成", // 分享描述
+            link: "http://h5.dodoh5.com.cn/O/xindiantu/index.html", // 分享链接
+            imgUrl: "http://s.flyfinger.com/picRepo/O/xindiantu/images/dian.png", // 分享图标
+            type: 'link', // 分享类型,music、video或link，不填默认为link
+            dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+            success: function () {
+                if (typeof _hmt !== 'undefined') {
+                    _hmt.push(["_trackEvent", "share_2", "click", "share_2"]);
+                }
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+            }
+        });
+    });
+
+}
 
 /***
  * 判断是否是微信浏览器
