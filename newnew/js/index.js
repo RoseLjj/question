@@ -7,7 +7,7 @@ var clearTime2;
 var yearsOld = 0; //年龄
 var number = 1; //第几题
 var yearArr = [9, 9, 8, 7, 4];
-var imgArr = ['http://s.flyfinger.com/picRepo/O/xindiantu/images/4.png', 'http://s.flyfinger.com/picRepo/O/xindiantu/images/1@2x.png', 'http://s.flyfinger.com/picRepo/O/xindiantu/images/2@2x.png', 'http://s.flyfinger.com/picRepo/O/xindiantu/images/3@2x.png', 'http://s.flyfinger.com/picRepo/O/xindiantu/images/5@2x.png']
+var imgArr = ['http://s.flyfinger.com/picRepo/O/xindiantu/images/28_1.png', 'http://s.flyfinger.com/picRepo/O/xindiantu/images/28_2.png', 'http://s.flyfinger.com/picRepo/O/xindiantu/images/28_3.png', 'http://s.flyfinger.com/picRepo/O/xindiantu/images/28_4.png', 'http://s.flyfinger.com/picRepo/O/xindiantu/images/28_5.png']
 var year = ['0~3', '4~7', '8~14', '15~18', '19~22', '23~27', '28~31', '32~40', '40+'];
 var yearData = []; //年龄段数组
 var happyData = []; //幸福度数组
@@ -47,7 +47,7 @@ var question = [
         num: 6,
         year: '23-26',
         title: '“别人家孩子”又来了',
-        anwser: ['工资在手，对象我有', '睡到自然醒', '“差不多”的人生', '相不完亲', '别人家孩子都是人生赢家', '我不想提起', '满满的美好回忆']
+        anwser: ['工资在手，对象我有', '还可以继续校园生活', '“差不多”的人生', '相不完亲', '别人家孩子都是人生赢家', '我不想提起', '满满的美好回忆']
     },
     {
         num: 7,
